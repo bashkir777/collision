@@ -14,8 +14,8 @@ public class InitBallBallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("ball_1") == null){
-            session.setAttribute("ball_1", new Ball(Physic.startPosition));
-            session.setAttribute("ball_2", new Ball(Physic.endPosition));
+            session.setAttribute("ball_1", new Ball(Physic.startPositionX, Physic.startPositionY));
+            session.setAttribute("ball_2", new Ball(Physic.endPositionX, Physic.startPositionY));
         }
         request.getRequestDispatcher("/ball_ball.jsp").forward(request, response);
     }

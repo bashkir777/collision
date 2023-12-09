@@ -58,7 +58,8 @@ function updateBall(_function) {
     $.get((window.location.href).toString().replace("/ball-wall", "/ball-wall-cord"))
         .done(function (response) {
             console.log(response);
-            ball.x = Number(response);
+            ball.x = Number(response.split(',')[0]);
+            ball.y = Number(response.split(',')[1]);
             clearCanvas();
             _function(ball);
         });

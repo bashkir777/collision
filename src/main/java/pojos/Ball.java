@@ -1,20 +1,31 @@
 package pojos;
 
 public class Ball {
-    private volatile int coordinate;
+    private volatile int coordinateX;
+    private volatile int coordinateY;
     private boolean onMove;
 
-    public Ball(int coordinate) {
-        this.coordinate = coordinate;
+    private volatile int speedX;
+    private volatile int speedY;
+
+    public Ball(int coordinateX, int coordinateY) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
         this.onMove = false;
     }
 
-    public int getCoordinate() {
-        return coordinate;
+    public int getCoordinateX() {
+        return coordinateX;
     }
 
-    public void setCoordinate(int coordinate) {
-        this.coordinate = coordinate;
+    public int getCoordinateY() {
+        return coordinateY;
+    }
+
+    public void setCoordinate(int coordinateX, int coordinateY) {
+
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
     }
 
     public boolean isOnMove() {
@@ -23,5 +34,21 @@ public class Ball {
 
     public void setOnMove(boolean onMove) {
         this.onMove = onMove;
+    }
+
+    public int getSpeedX() {
+        return speedX;
+    }
+
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
+    }
+
+    public int getSpeedY() {
+        return speedY;
+    }
+
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
     }
 }

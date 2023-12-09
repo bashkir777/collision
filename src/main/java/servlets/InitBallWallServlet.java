@@ -13,7 +13,7 @@ public class InitBallWallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("ball") == null){
-            session.setAttribute("ball", new Ball(50));
+            session.setAttribute("ball", new Ball(50, 250));
         }
         request.getRequestDispatcher("/ball_wall.jsp").forward(request, response);
     }

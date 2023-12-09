@@ -13,7 +13,7 @@ public class BallWallResetServlet extends HttpServlet {
             HttpSession session = request.getSession();
             Ball ball = (Ball)session.getAttribute("ball");
             ball.setOnMove(false);
-            ball.setCoordinate(Physic.startPosition);
+            ball.setCoordinate(Physic.startPositionX, Physic.startPositionY);
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         }catch (NullPointerException e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -15,7 +15,7 @@ public class BallWallCordServlet extends HttpServlet {
         Ball ball = (Ball) session.getAttribute("ball");
         PrintWriter pw = response.getWriter();
         if(ball != null){
-            pw.println(ball.getCoordinate());
+            pw.println(ball.getCoordinateX() + "," + ball.getCoordinateY());
         }else{
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             pw.println("ball object have never been initialize for this session");
