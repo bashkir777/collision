@@ -34,9 +34,11 @@ public class Physic {
         return (int)(startSpeed * Math.sin(3 * Math.PI / 4) - 9.8 * curTime);
     }
 
-    private static int updateSpeed(long startTime, int speed){
+    private static int updateSpeed(long startTime, int speed, String form){
         long curTime = (System.currentTimeMillis() - startTime);
-        double a = 0.00005;
+        double a = 0.0005;
+        if (form.equals("donut")) a = 0.0004;
+        if (form.equals("hoop")) a = 0.000001;
         if (speed > 0){
             speed -= curTime * a;
         } else {
@@ -46,7 +48,7 @@ public class Physic {
     }
 
 
-    public static void ball_wall_cycle(Ball ball, int speed){
+    public static void ball_wall_cycle(Ball ball, int speed, String form, Boolean wall_friction){
         long start = System.currentTimeMillis();
         long startY = 0;
         int speedY = 0;
@@ -59,7 +61,7 @@ public class Physic {
         while(ball.isOnMove()){
 
             if (ball.getCoordinateX() < endPositionX && !hit){
-                ball.setSpeedX(updateSpeed(start, ball.getSpeedX()));
+                ball.setSpeedX(updateSpeed(start, ball.getSpeedX(), form));
                 int x = straightMove(startPositionX, start, ball.getSpeedX());
                 if (ball.getCoordinateX() > x){
                     ball.setSpeedX(0);
@@ -80,10 +82,10 @@ public class Physic {
             }
 
             if (hit){
-                ball.setSpeedX(updateSpeed(start, ball.getSpeedX()));
+                ball.setSpeedX(updateSpeed(start, ball.getSpeedX(), form));
 
                 int x = -straightMove(startPositionX, start, ball.getSpeedX()) + 2 * endPositionX;
-                int y = getHeight(startPositionY, startY, speedY);
+                int y = wall_friction ? getHeight(startPositionY, startY, speedY) : startPositionY;
                 if (ball.getCoordinateX() < x){
                     ball.setSpeedX(0);
                     x = ball.getCoordinateX();

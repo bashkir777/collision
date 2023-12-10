@@ -16,9 +16,11 @@ public class BallWallStartMoveServlet extends HttpServlet {
         PrintWriter pw = response.getWriter();
         try{
             int speed = Integer.parseInt(request.getParameter("speed"));
+            Boolean wall_friction = Boolean.parseBoolean(request.getParameter("wall_friction"));
+            String form = request.getParameter("form");
             HttpSession session = request.getSession();
             Ball ball = (Ball)session.getAttribute("ball");
-            Physic.ball_wall_cycle(ball, speed);
+            Physic.ball_wall_cycle(ball, speed, form, wall_friction);
         }catch (Exception e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             pw.println("failed to start movement");
