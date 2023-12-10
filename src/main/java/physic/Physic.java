@@ -22,6 +22,11 @@ public class Physic {
         return (int)(startPosition + (speed * ((System.currentTimeMillis() - startTime))/1000));
     }
 
+    private static int getDeltaX(int currentPosition, int speed){
+        return (int)(currentPosition + speed * (10 / 1000.0));
+
+    }
+
     //https://yandex.ru/images/search?img_url=https%3A%2F%2Ffuzeservers.ru%2Fwp-content%2Fuploads%2F0%2F7%2F2%2F072fda88ced15b93f1bab6a97fa85bdd.jpeg&lr=2&pos=2&rpt=simage&source=serp&text=уравнение%20высоты%20шарика%20от%20падения
     private static int getHeight(int y, long startTime, int startSpeed){
         double curTime = (System.currentTimeMillis() - startTime) / 1000.0;
@@ -38,12 +43,8 @@ public class Physic {
         long curTime = (System.currentTimeMillis() - startTime);
         double a = 0.0005;
         if (form.equals("donut")) a = 0.0004;
-        if (form.equals("hoop")) a = 0.000001;
-        if (speed > 0){
-            speed -= curTime * a;
-        } else {
-            speed += curTime * a;
-        }
+        if (form.equals("hoop")) a = 0.00021;
+        speed -= curTime * a;
         return speed;
     }
 
@@ -105,18 +106,80 @@ public class Physic {
 
     }
 
-    public static void ball_ball_cycle(Ball ball1, int speed1, Ball ball2, int speed2){
+    public static void ball_ball_cycle(Ball ball1, int speed1, Ball ball2, int speed2, String form1, String form2){
         long start = System.currentTimeMillis();
         ball1.setOnMove(true);
         ball2.setOnMove(true);
+        ball1.setSpeedX(speed1 + 100);
+        ball1.setSpeedY(0);
+        ball2.setSpeedX(speed2);
+        ball2.setSpeedY(0);
+        long start1Y = 0;
+        long start2Y = 0;
+        int speed1Y = 0;
+        int speed2Y = 0;
         boolean hit = false;
         while (ball1.isOnMove() && ball2.isOnMove()){
             if (ball1.getCoordinateX() + 50 < ball2.getCoordinateX() - 50 && !hit){
-                ball1.setCoordinate(straightMove(startPositionX, start, speed1), startPositionY);
-                ball2.setCoordinate(straightMove(endPositionX, start, speed2), startPositionY);
-            }else{
-                ball1.setOnMove(false);
-                ball2.setOnMove(false);
+                ball1.setSpeedX(updateSpeed(start, ball1.getSpeedX(), form1));
+                ball2.setSpeedX(updateSpeed(start, ball2.getSpeedX(), form2));
+                int x1 = getDeltaX(ball1.getCoordinateX(), ball1.getSpeedX());
+                int x2 = getDeltaX(ball2.getCoordinateX(), -ball2.getSpeedX());
+                if (ball1.getCoordinateX() > x1){
+                    ball1.setSpeedX(0);
+                    x1 = ball1.getCoordinateX();
+                }
+                if (ball2.getCoordinateX() < x2){
+                    ball2.setSpeedX(0);
+                    x2 = ball2.getCoordinateX();
+                }
+                ball1.setCoordinate(x1, startPositionY);
+                ball2.setCoordinate(x2, startPositionY);
+            }else if (!hit){
+                hit = true;
+                speed1 = ball1.getSpeedX();
+                speed2 = ball2.getSpeedX();
+                ball1.setSpeedX(speed2);
+                ball2.setSpeedX(speed1);
+                start1Y = System.currentTimeMillis();
+                start2Y = System.currentTimeMillis();
+                speed1Y = ball1.getSpeedX();
+                speed2Y = ball2.getSpeedX();
+            }
+
+            if (hit){
+
+                ball1.setSpeedX(updateSpeed(start, ball1.getSpeedX(), form1));
+                ball2.setSpeedX(updateSpeed(start, ball2.getSpeedX(), form2));
+                int x1 = getDeltaX(ball1.getCoordinateX(), -ball1.getSpeedX());
+                int x2 = getDeltaX(ball2.getCoordinateX(), ball2.getSpeedX());
+                int y1 = getHeight(startPositionY, start1Y, speed1Y);
+                int y2 = getHeight(startPositionY, start2Y, speed2Y);
+                if (ball1.getCoordinateX() < x1){
+                    ball1.setSpeedX(0);
+                    x1 = ball1.getCoordinateX();
+                }
+                if (ball2.getCoordinateX() > x2){
+                    ball2.setSpeedX(0);
+                    x2 = ball2.getCoordinateX();
+                }
+                if (y1 > startPositionY){
+                    speed1Y = getNewSpeedY(start1Y, speed1Y);
+                    start1Y = System.currentTimeMillis();
+                }
+                if (y2 > startPositionY){
+                    speed2Y = getNewSpeedY(start1Y, speed1Y);
+                    start2Y = System.currentTimeMillis();
+                }
+                ball1.setCoordinate(x1, y1);
+                ball2.setCoordinate(x2, y2);
+
+            }
+
+            try{
+                Thread.sleep(10);
+            }catch (InterruptedException e){
+                System.err.println("Thread was interrupted");
             }
         }
     }

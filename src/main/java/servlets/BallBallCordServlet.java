@@ -17,7 +17,7 @@ public class BallBallCordServlet extends HttpServlet {
         Ball ball2 = (Ball) session.getAttribute("ball_2");
         PrintWriter pw = response.getWriter();
         if(ball1 != null && ball2 != null){
-            pw.println(ball1.getCoordinateX()+ " " + ball2.getCoordinateY());
+            pw.println(ball1.getCoordinateX()+ "," + ball1.getCoordinateY() + "," + ball2.getCoordinateX()+ "," + ball2.getCoordinateY());
         }else{
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             pw.println("ball object have never been initialize for this session");

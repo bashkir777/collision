@@ -61,8 +61,10 @@ function updateBalls(function1, function2) {
     $.get((window.location.href).toString().replace("/ball-ball", "/ball-ball-cord"))
         .done(function(response) {
             console.log(response);
-            ball_1.x = Number(response.split(" ")[0]);
-            ball_2.x = Number(response.split(" ")[1]);
+            ball_1.x = Number(response.split(",")[0]);
+            ball_1.y = Number(response.split(",")[1]);
+            ball_2.x = Number(response.split(",")[2]);
+            ball_2.y = Number(response.split(",")[3]);
             clearCanvas();
             function1(ball_1);
             function2(ball_2);

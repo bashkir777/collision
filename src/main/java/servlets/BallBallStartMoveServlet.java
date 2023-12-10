@@ -16,11 +16,13 @@ public class BallBallStartMoveServlet extends HttpServlet {
         PrintWriter pw = response.getWriter();
         try{
             int speed1 = Integer.parseInt(request.getParameter("speed_1"));
-            int speed2 = -Integer.parseInt(request.getParameter("speed_2"));
+            int speed2 = Integer.parseInt(request.getParameter("speed_2"));
+            String form1 = request.getParameter("form_1");
+            String form2 = request.getParameter("form_2");
             HttpSession session = request.getSession();
             Ball ball1 = (Ball)session.getAttribute("ball_1");
             Ball ball2 = (Ball)session.getAttribute("ball_2");
-            Physic.ball_ball_cycle(ball1, speed1, ball2, speed2);
+            Physic.ball_ball_cycle(ball1, speed1, ball2, speed2, form1, form2);
         }catch (Exception e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             pw.println("failed to start movement");
